@@ -1,4 +1,4 @@
-import Post from "./Post";
+import Post from "@/app/components/Post";
 
 const Feed = () => {
   return (
@@ -12,7 +12,6 @@ const Feed = () => {
       <Post />
       <Post />
       <Post />
-      
     </div>
   );
 };
