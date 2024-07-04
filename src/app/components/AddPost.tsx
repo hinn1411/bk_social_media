@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const AddPost = () => {
   const { userId } = auth();
-  console.log(`userId = ${userId}`);
+  console.log(`AddPost.tsx, userId = ${userId}`);
 
   const testAction = async (formData: FormData) => {
     "use server";

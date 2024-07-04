@@ -1,7 +1,9 @@
 "use client";
 
+import { acceptFollowRequest, declineFollowRequest } from "@/lib/actions";
 import { FollowRequest, User } from "@prisma/client";
 import Image from "next/image";
+import { useOptimistic, useState } from "react";
 
 type RequestWithUser = FollowRequest & {
   sender: User;
@@ -11,9 +13,29 @@ interface FriendRequestListProps {
   requests: RequestWithUser[];
 }
 const FriendRequestList = ({ requests }: FriendRequestListProps) => {
+  const [requestState, setRequestState] = useState(requests);
+
+  const [optimisticRequest, removeOptimisticRequest] = useOptimistic(
+    requestState,
+    (state, requestId: number) => state.filter((req) => req.id !== requestId)
+  );
+  const accept = async (requestId: number, userId: string) => {
+    removeOptimisticRequest(requestId);
+    try {
+      await acceptFollowRequest(userId);
+      setRequestState((prev) => prev.filter((req) => req.id !== requestId));
+    } catch (err) {}
+  };
+  const decline = async (requestId: number, userId: string) => {
+    removeOptimisticRequest(requestId);
+    try {
+      await declineFollowRequest(userId);
+      setRequestState((prev) => prev.filter((req) => req.id !== requestId));
+    } catch (err) {}
+  };
   return (
     <div>
-      {requests.map((request) => (
+      {optimisticRequest.map((request) => (
         <div key={request.id} className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Image
@@ -31,20 +53,30 @@ const FriendRequestList = ({ requests }: FriendRequestListProps) => {
           </div>
           {/* Btn container  */}
           <div className="flex gap-3 justify-end">
-            <Image
-              src="/accept.png"
-              alt=""
-              width={20}
-              height={20}
-              className="cursor-pointer"
-            />
-            <Image
-              src="/reject.png"
-              alt=""
-              width={20}
-              height={20}
-              className="cursor-pointer"
-            />
+            <form action={() => accept(request.id, request.sender.id)}>
+              <button>
+                {" "}
+                <Image
+                  src="/accept.png"
+                  alt=""
+                  width={20}
+                  height={20}
+                  className="cursor-pointer"
+                />
+              </button>
+            </form>
+            <form action={() => decline(request.id, request.sender.id)}>
+              <button>
+                {" "}
+                <Image
+                  src="/reject.png"
+                  alt=""
+                  width={20}
+                  height={20}
+                  className="cursor-pointer"
+                />
+              </button>
+            </form>
           </div>
         </div>
       ))}

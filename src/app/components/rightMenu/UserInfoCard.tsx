@@ -56,7 +56,7 @@ const UserInfoCard = async ({ user }: UserInfoCardProps) => {
       <div className="flex justify-between items-center font-medium">
         <span>User Information</span>
         {currentUserId === user.id ? (
-          <UpdateUser />
+          <UpdateUser user={user} />
         ) : (
           <Link href="/" className="text-blue-500 text-xs">
             See all
@@ -103,7 +103,7 @@ const UserInfoCard = async ({ user }: UserInfoCardProps) => {
             <span>
               Works at{" "}
               <span>
-                <b>Devers Inc.</b>
+                <b>{user.work}</b>
               </span>
             </span>
           </div>
@@ -114,10 +114,11 @@ const UserInfoCard = async ({ user }: UserInfoCardProps) => {
             <div className="flex gap-2 items-center">
               <Image src="/link.png" alt="" width={16} height={16} />
               <Link
-                href="https://hinn1411.github.io/threejs-portfolio/"
+                target="_blank"
+                href={user.website}
                 className="text-blue-500 font-medium"
               >
-                hinn1411.github.io/threejs-portfolio
+                {user.website}
               </Link>
             </div>
           )}
