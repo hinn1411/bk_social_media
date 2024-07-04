@@ -1,8 +1,8 @@
-import LeftMenu from "@/app/components/LeftMenu";
-import RightMenu from "@/app/components/RightMenu";
+import LeftMenu from "@/app/components/leftMenu/LeftMenu";
+import RightMenu from "@/app/components/rightMenu/RightMenu";
 import Stories from "@/app/components/Stories";
 import AddPost from "@/app/components/AddPost";
-import Feed from "@/app/components/Feed";
+import Feed from "@/app/components/feed/Feed";
 const Homepage = () => {
   return (
     <div className="flex gap-6 pt-6">
@@ -17,7 +17,7 @@ const Homepage = () => {
         </div>
       </div>
       <div className="hidden lg:block w-[30%]">
-        <RightMenu userId="test" />
+        <RightMenu  />
       </div>
     </div>
   );

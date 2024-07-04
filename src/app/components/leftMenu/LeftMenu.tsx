@@ -1,7 +1,7 @@
-import ProfileCard from "@/app/components/ProfileCard";
+import ProfileCard from "@/app/components/leftMenu/ProfileCard";
 import Image from "next/image";
 import Link from "next/link";
-import Ad from "./Ad";
+import Ad from "../Ad";
 interface LeftMenuProps {
   screenType: "home" | "profile";
 }

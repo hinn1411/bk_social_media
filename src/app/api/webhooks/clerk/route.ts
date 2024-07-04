@@ -53,8 +53,8 @@ export async function POST(req: Request) {
   // For this guide, you simply log the payload to the console
   const { id } = evt.data;
   const eventType = evt.type;
-  console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
-  console.log("Webhook body:", body);
+  // console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
+  // console.log("Webhook body:", body);
 
   if (eventType === "user.created") {
     try {
@@ -87,6 +87,19 @@ export async function POST(req: Request) {
     } catch (err) {
       console.log(err);
       return new Response("Failed to create user!", { status: 500 });
+    }
+  }
+  if (eventType === "user.deleted") {
+    try {
+      await prisma.user.delete({
+        where: {
+          id: id,
+        },
+      });
+      return new Response("User has been deleted!", { status: 200 });
+    } catch (err) {
+      console.log(err);
+      return new Response("Failed to delete user!", { status: 500 });
     }
   }
   return new Response("Webhook received", { status: 200 });
